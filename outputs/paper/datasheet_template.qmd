@@ -1,9 +1,7 @@
 ---
-title: "Datasheet for 'A dataset'"
-subtitle: "My subtitle if needed"
+title: "Placeholder title"
 author: 
-  - First author
-  - Another author
+  - Jiaming Wang
 thanks: "Code and data are available at: LINK."
 date: "`r Sys.time()`"
 date-format: "D MMMM YYYY"

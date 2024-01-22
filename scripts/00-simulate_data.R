@@ -14,6 +14,3 @@ library(tidyverse)
 
 #### Simulate data ####
 # [...ADD CODE HERE...]
-
-
-
