@@ -1,11 +1,9 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
+# Purpose: Cleans two raw dats downloaded from opendatatoronto
 # Author: Andy Wang
-# Date: January 22 2024
-# Contact: jming.wang@mail.utoronto.com
+# Date: January 23, 2023
+# Contact: jming.wang@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
 
 
 #### Workspace setup ####

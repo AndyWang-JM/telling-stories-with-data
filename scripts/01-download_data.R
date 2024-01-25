@@ -1,10 +1,9 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
+# Purpose: Downloads and saves the data from opendatatoronto
 # Author: Andy Wang
-# Date: January 22 2024
-# Contact: jming.wang@mail.utoronto.com
+# Date: January 23, 2023
+# Contact: jming.wang@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
 
 
 #### Workspace setup ####
