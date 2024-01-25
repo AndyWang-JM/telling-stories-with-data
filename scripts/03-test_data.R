@@ -6,7 +6,11 @@
 # License: MIT
 
 #### Workspace setup ####
+library(janitor)
+library(knitr)
+library(lubridate)
+library(opendatatoronto)
 library(tidyverse)
-# [...UPDATE THIS...]
+
 
 #### Test data ####
