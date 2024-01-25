@@ -1,44 +1,69 @@
 #### Preamble ####
 # Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Author: Andy Wang
+# Date: January 22 2024
+# Contact: jming.wang@mail.utoronto.com
 # License: MIT
 # Pre-requisites: [...UPDATE THIS...]
 # Any other information needed? [...UPDATE THIS...]
 
+
 #### Workspace setup ####
+library(janitor)
+library(knitr)
+library(lubridate)
+library(opendatatoronto)
 library(tidyverse)
 
-#### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
-  mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
-  ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
-  mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
-  ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
+#### Clean data ####
+licences_raw_data <-
+  read_csv(
+    "inputs/data/licences_raw_data.csv",
+    show_col_types = FALSE
+  )
+
+licences_cleaned_data <-
+  clean_names(licences_raw_data) |>
+  mutate(issued = ymd(issued)) |> 
+  select(x_id, category, issued, licence_address_line_2) |>
+  tidyr::drop_na() |>
+  rename(id = x_id,
+         issued_date = issued,
+         address = licence_address_line_2) |>
+  mutate(category = case_when(
+    category == "EATING ESTABLISHMENT" ~ "eating_establishment",
+    category == "RETAIL STORE (FOOD)" ~ "retail_store_food",
+    category == "PUBLIC GARAGE" ~ "public_garage",
+    category == "PERSONAL SERVICES SETTINGS" ~ "personal_services_settings",
+    category == "LAUNDRY" ~ "laundry",
+    category == "COMMERCIAL PARKING LOT" ~ "commercial_parking_lot",
+    category == "HOLISTIC CENTRE" ~ "holistic_centre",
+    category == "BUILDING RENOVATOR" ~ "building_renovator",
+    category == "TOW TRUCK OWNER" ~ "tow_truck_owner",
+    category == "TAXICAB OWNER" ~ "taxicab owner",
+    TRUE ~ "other"))|>
+  mutate(address = tolower(address),
+         address = substr(address, 1, nchar(address) - 4)) |>
+  filter(year(issued_date) >= 2018, 
+         year(issued_date) <= 2023)
+
+licences_raw_data <-
+  read_csv(
+    "inputs/data/covid_raw_data.csv",
+    show_col_types = FALSE
+  )
+
+covid_cleaned_data <-
+  clean_names(covid_raw_data) |>
+  mutate(reported_date = ymd(reported_date)) |>
+  select(id, reported_date) |>
   tidyr::drop_na()
 
+head(covid_cleaned_data)
+
+
 #### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+write_csv(licences_cleaned_data, "outputs/data/licences_cleaned_data.csv")
+write_csv(covid_cleaned_data, "outputs/data/covid_cleaned_data.csv")
+
